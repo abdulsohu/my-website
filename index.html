@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My Simple Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto Mono', monospace;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fdfdfd;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+    a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s, transform 0.2s;
+    }
+    a:hover {
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello from GitHub Pages!</h1>
+  <h1>Hi! AS here. 👋</h1>
   <p>This is my simple website.</p>
+  <p>Currently, I'm 
+    <a href="https://www.youtube.com/watch?v=PRBSKaTDrqQ" target="_blank" rel="noopener noreferrer">
+      wired in 🎧
+    </a>
+  </p>
+  <footer>
+    <p>Made with ❤️ and GitHub Pages</p>
+  </footer>
 </body>
 </html>
