@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const pubDate = post.data.pubDate.toLocaleDateString("en-US", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  timeZone: "UTC",
+});
+---
+
+<BaseLayout title={`${post.data.title} | Abdul Sohu`} description={post.data.description}>
+  <main class="page-shell">
+    <article class="article-shell">
+      <p class="home-link"><a href="/">Home</a></p>
+      <header class="article-header">
+        <h1>{post.data.title}</h1>
+        <p class="article-description">{post.data.description}</p>
+        <p class="article-meta">
+          <time datetime={post.data.pubDate.toISOString()}>{pubDate}</time>
+        </p>
+      </header>
+      <div class="prose">
+        <slot />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

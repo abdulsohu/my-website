@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("posts")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const formatListDate = (date: Date) =>
+  `${date.getUTCFullYear()}/${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+---
+
+<BaseLayout
+  title="Writing | Abdul Sohu"
+  description="Technical notes and essays by Abdul Sohu."
+>
+  <main class="page-shell">
+    <div class="article-shell">
+      <p class="home-link"><a href="/">Home</a></p>
+      <header class="article-header">
+        <h1>Writing</h1>
+        <p class="article-description">
+          Notes on systems, performance, architecture, and technical taste.
+        </p>
+      </header>
+
+      <ul class="writing-list">
+        {posts.map((post) => (
+          <li>
+            <a class="writing-entry" href={`/posts/${post.id}/`}>
+              <span class="writing-date">{formatListDate(post.data.pubDate)}</span>
+              <span>
+                {post.data.title}
+                <span class="writing-description"> — {post.data.description}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </main>
+</BaseLayout>

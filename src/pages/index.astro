@@ -1,0 +1,52 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("posts"))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 4);
+
+const formatListDate = (date: Date) =>
+  `${date.getUTCFullYear()}/${String(date.getUTCMonth() + 1).padStart(2, "0")}`;
+---
+
+<BaseLayout
+  title="Abdul Sohu"
+  description="Software engineer writing about systems, performance, and technical craft."
+>
+  <main class="page-shell">
+    <div class="home-shell">
+      <section>
+        <h1>Abdul Sohu</h1>
+        <p class="lede">
+          Software engineer writing about systems, performance, and the small
+          decisions that make software easier to reason about.
+        </p>
+      </section>
+
+      <section>
+        <h2>Writing</h2>
+        <ul class="writing-list">
+          {posts.map((post) => (
+            <li>
+              <a class="writing-entry" href={`/posts/${post.id}/`}>
+                <span class="writing-date">{formatListDate(post.data.pubDate)}</span>
+                <span>{post.data.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="section-note"><a href="/writing/">See all writing</a></p>
+      </section>
+
+      <section>
+        <h2>Selected links</h2>
+        <ul class="link-list">
+          <li><a href="https://github.com/abdulsohu">GitHub</a></li>
+          <li><a href="https://github.com/abdulsohu/my-website">Site repository</a></li>
+          <li><a href="/writing/">Writing archive</a></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
