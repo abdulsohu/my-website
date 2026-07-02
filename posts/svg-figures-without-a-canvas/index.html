@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SVG Figures Without a Canvas | Abdul Sohu</title><meta name="description" content="When a hand-written diagram is enough, static assets age gracefully."><link rel="canonical" href="https://www.abdulsohu.com/posts/svg-figures-without-a-canvas/"><link rel="stylesheet" href="/_astro/BaseLayout.BL-mTk_l.css"></head><body><main class="page-shell"><article class="article-shell"><p class="home-link"><a href="/">Home</a></p><header class="article-header"><h1>SVG Figures Without a Canvas</h1><p class="article-description">When a hand-written diagram is enough, static assets age gracefully.</p><p class="article-meta"><time datetime="2026-06-24T00:00:00.000Z">June 24, 2026</time></p></header><div class="prose"><p>You do not need a charting library to explain a simple idea.</p>
+<p>For many technical posts, a hand-written SVG is the sweet spot:</p>
+<ul>
+<li>it is crisp at every size</li>
+<li>it diffs well in Git</li>
+<li>it loads instantly</li>
+<li>it remains understandable months later</li>
+</ul>
+<p>Here is a small example:</p>
+<p><img src="/figures/branchless-pipeline.svg" alt="A branchless pipeline figure showing fetch, decode, compare, and retire stages."></p>
+<p>The important property of a figure like this is not artistic polish. It is that the drawing matches the argument. If the text says “work moves left to right through four fixed stages,” then four labeled boxes and three arrows are enough.<sup><a href="#user-content-fn-ornament" id="user-content-fnref-ornament" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup></p>
+<p>This is especially useful in writing about systems, where a diagram often exists to remove ambiguity rather than impress the reader. A minimal SVG keeps the explanation concrete:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="rust"><code><span class="line"><span style="color:#D73A49">for</span><span style="color:#24292E"> stage </span><span style="color:#D73A49">in</span><span style="color:#24292E"> pipeline {</span></span>
+<span class="line"><span style="color:#24292E">    state </span><span style="color:#D73A49">=</span><span style="color:#24292E"> stage</span><span style="color:#D73A49">.</span><span style="color:#6F42C1">run</span><span style="color:#24292E">(state);</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>The code is linear. The figure is linear. The reader does not have to translate between two different storytelling styles.</p>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-ornament">
+<p>Ornament is not bad. It is just easy to overpay for when the job is explanation. <a href="#user-content-fnref-ornament" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section></div></article></main></body></html>

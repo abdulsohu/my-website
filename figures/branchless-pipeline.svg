@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 220" role="img" aria-labelledby="title desc">
+  <title id="title">Branchless pipeline diagram</title>
+  <desc id="desc">Four labeled stages connected by arrows from left to right.</desc>
+  <rect width="880" height="220" fill="#ffffff"/>
+  <g font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" fill="#1f3f70">
+    <text x="48" y="42" font-size="28" font-weight="700">A fixed four-stage path</text>
+    <text x="48" y="74" font-size="18" fill="#5f6b7a">Each stage does one small piece of work, then hands the state forward.</text>
+  </g>
+  <g font-family="Avenir Next, Helvetica Neue, Arial, sans-serif" font-size="20" text-anchor="middle">
+    <rect x="48" y="108" width="168" height="64" rx="6" fill="#edf3fb" stroke="#2e63ac" />
+    <text x="132" y="148" fill="#1f3f70">fetch</text>
+
+    <rect x="262" y="108" width="168" height="64" rx="6" fill="#edf3fb" stroke="#2e63ac" />
+    <text x="346" y="148" fill="#1f3f70">decode</text>
+
+    <rect x="476" y="108" width="168" height="64" rx="6" fill="#edf3fb" stroke="#2e63ac" />
+    <text x="560" y="148" fill="#1f3f70">compare</text>
+
+    <rect x="690" y="108" width="142" height="64" rx="6" fill="#edf3fb" stroke="#2e63ac" />
+    <text x="761" y="148" fill="#1f3f70">retire</text>
+  </g>
+  <g stroke="#2e63ac" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M216 140H252" />
+    <path d="M430 140H466" />
+    <path d="M644 140H680" />
+  </g>
+  <g fill="#2e63ac">
+    <path d="M252 140l-10 -7v14z" />
+    <path d="M466 140l-10 -7v14z" />
+    <path d="M680 140l-10 -7v14z" />
+  </g>
+</svg>

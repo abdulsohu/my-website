@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Latency Budgets From First Principles | Abdul Sohu</title><meta name="description" content="A simple way to reason about where interactive time disappears."><link rel="canonical" href="https://www.abdulsohu.com/posts/latency-budgets-from-first-principles/"><link rel="stylesheet" href="/_astro/BaseLayout.BL-mTk_l.css"></head><body><main class="page-shell"><article class="article-shell"><p class="home-link"><a href="/">Home</a></p><header class="article-header"><h1>Latency Budgets From First Principles</h1><p class="article-description">A simple way to reason about where interactive time disappears.</p><p class="article-meta"><time datetime="2026-06-30T00:00:00.000Z">June 30, 2026</time></p></header><div class="prose"><p>When a page feels slow, users rarely care <em>which</em> layer lost the time. They only feel the total. That is why I like latency budgets: they force every subsystem to spend from the same finite envelope.</p>
+<figure class="figure"><img src="/_astro/latency-trace.ctA9J5US_Z1ScpUF.webp" srcset="/_astro/latency-trace.ctA9J5US_1bRnBy.webp 720w, /_astro/latency-trace.ctA9J5US_K7T8p.webp 1200w" alt="A minimalist latency trace with phases for request, compute, and render." sizes="(min-width: 48rem) 42rem, calc(100vw - 2rem)" loading="lazy" decoding="async" width="1400" height="800"><figcaption>A hand-made trace image rendered through Astro&#39;s responsive image pipeline.</figcaption></figure>
+<p>Suppose we want the median interaction to stay under <code>120 ms</code>. A rough decomposition might look like this:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Phase</th><th style="text-align:right">Target</th></tr></thead><tbody><tr><td>Network request</td><td style="text-align:right">35 ms</td></tr><tr><td>Backend compute</td><td style="text-align:right">30 ms</td></tr><tr><td>Data shaping</td><td style="text-align:right">20 ms</td></tr><tr><td>Rendering</td><td style="text-align:right">35 ms</td></tr></tbody></table>
+<p>The point is not that these numbers are perfect. The point is that once the budget exists, every optimization can be evaluated against a shared target instead of a vague wish to “make it faster.”</p>
+<p>Here is a tiny benchmark harness that captures the same mindset:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word" tabindex="0" data-language="go"><code><span class="line"><span style="color:#D73A49">package</span><span style="color:#6F42C1"> main</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">import</span><span style="color:#24292E"> (</span></span>
+<span class="line"><span style="color:#032F62">  &quot;</span><span style="color:#6F42C1">fmt</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#032F62">  &quot;</span><span style="color:#6F42C1">time</span><span style="color:#032F62">&quot;</span></span>
+<span class="line"><span style="color:#24292E">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> measure</span><span style="color:#24292E">(</span><span style="color:#E36209">name</span><span style="color:#D73A49"> string</span><span style="color:#24292E">, </span><span style="color:#E36209">f</span><span style="color:#D73A49"> func</span><span style="color:#24292E">()) {</span></span>
+<span class="line"><span style="color:#24292E">  started </span><span style="color:#D73A49">:=</span><span style="color:#24292E"> time.</span><span style="color:#6F42C1">Now</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#6F42C1">  f</span><span style="color:#24292E">()</span></span>
+<span class="line"><span style="color:#24292E">  fmt.</span><span style="color:#6F42C1">Printf</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;</span><span style="color:#005CC5">%s</span><span style="color:#032F62"> took </span><span style="color:#005CC5">%s\n</span><span style="color:#032F62">&quot;</span><span style="color:#24292E">, name, time.</span><span style="color:#6F42C1">Since</span><span style="color:#24292E">(started))</span></span>
+<span class="line"><span style="color:#24292E">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">func</span><span style="color:#6F42C1"> main</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#6F42C1">  measure</span><span style="color:#24292E">(</span><span style="color:#032F62">&quot;render&quot;</span><span style="color:#24292E">, </span><span style="color:#D73A49">func</span><span style="color:#24292E">() {</span></span>
+<span class="line"><span style="color:#24292E">    time.</span><span style="color:#6F42C1">Sleep</span><span style="color:#24292E">(</span><span style="color:#005CC5">18</span><span style="color:#D73A49"> *</span><span style="color:#24292E"> time.Millisecond)</span></span>
+<span class="line"><span style="color:#24292E">  })</span></span>
+<span class="line"><span style="color:#24292E">}</span></span></code></pre>
+<p>This kind of harness is not meant to replace production tracing. It exists to answer a smaller question early: <em>is this approach even in the right order of magnitude?</em></p>
+<p>My rule of thumb is simple:</p>
+<ol>
+<li>Budget the full path.</li>
+<li>Measure the largest term.</li>
+<li>Remove whole classes of work before tuning the remaining pieces.</li>
+</ol>
+<p>That third step is where most of the leverage hides. A cache hit is better than a faster query. A precomputed index is better than a clever scan. A smaller payload is better than a more heroic parser.</p></div></article></main></body></html>

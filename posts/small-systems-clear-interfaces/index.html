@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Small Systems, Clear Interfaces | Abdul Sohu</title><meta name="description" content="Why the narrowest seam is often the fastest seam."><link rel="canonical" href="https://www.abdulsohu.com/posts/small-systems-clear-interfaces/"><link rel="stylesheet" href="/_astro/BaseLayout.BL-mTk_l.css"></head><body><main class="page-shell"><article class="article-shell"><p class="home-link"><a href="/">Home</a></p><header class="article-header"><h1>Small Systems, Clear Interfaces</h1><p class="article-description">Why the narrowest seam is often the fastest seam.</p><p class="article-meta"><time datetime="2026-07-01T00:00:00.000Z">July 1, 2026</time></p></header><div class="prose"><p>Most performance work is really interface work.</p>
+<p>When a system feels slow, the first instinct is often to optimize the hottest function. Sometimes that is right. More often, the better question is: what forced this function to do so much work in the first place?</p>
+<p>A clean interface does three useful things at once:</p>
+<ol>
+<li>It states exactly what data is needed.</li>
+<li>It prevents accidental work from leaking across boundaries.</li>
+<li>It gives you a place to measure behavior without guessing.</li>
+</ol>
+<p>That last point matters more than people admit. Once a boundary is explicit, you can count calls, size payloads, and write down latency expectations.<sup><a href="#user-content-fn-measure" id="user-content-fnref-measure" data-footnote-ref="" aria-describedby="footnote-label">1</a></sup> Before that, the work is usually hidden inside convenience.</p>
+<p>Consider a tiny service split:</p>
+<pre class="astro-code github-light" style="background-color:#fff;color:#24292e; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> Profile</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#E36209">  id</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#E36209">  displayName</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#E36209">  reputation</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> number</span><span style="color:#24292E">;</span></span>
+<span class="line"><span style="color:#24292E">};</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D73A49">type</span><span style="color:#6F42C1"> ProfileStore</span><span style="color:#D73A49"> =</span><span style="color:#24292E"> {</span></span>
+<span class="line"><span style="color:#6F42C1">  getPublicProfile</span><span style="color:#24292E">(</span><span style="color:#E36209">id</span><span style="color:#D73A49">:</span><span style="color:#005CC5"> string</span><span style="color:#24292E">)</span><span style="color:#D73A49">:</span><span style="color:#6F42C1"> Promise</span><span style="color:#24292E">&#x3C;</span><span style="color:#6F42C1">Profile</span><span style="color:#D73A49"> |</span><span style="color:#005CC5"> null</span><span style="color:#24292E">>;</span></span>
+<span class="line"><span style="color:#24292E">};</span></span></code></pre>
+<p>This looks ordinary, but it quietly rules out a large class of waste. A caller cannot ask for the entire row “just in case.” The store does not need to materialize private fields. Caching becomes less fragile because the returned shape is stable.</p>
+<p>The boring versions of these choices accumulate into real wins:</p>
+<ul>
+<li>fewer bytes moved across process boundaries</li>
+<li>fewer cache keys</li>
+<li>less rendering churn</li>
+<li>fewer surprises during refactors</li>
+</ul>
+<p>The strongest technical writing has the same property. It exposes the minimum surface area needed for the reader to continue. The best code often reads like that too: short commitments, explicit assumptions, and very little theater.</p>
+<blockquote>
+<p>If an API is hard to measure, it is usually hard to own.</p>
+</blockquote>
+<p>There is a temptation to call this “premature abstraction.” I think the opposite is closer to true. Bad abstraction is premature. Clear naming and narrow contracts are what let a codebase stay small for longer.<sup><a href="#user-content-fn-small" id="user-content-fnref-small" data-footnote-ref="" aria-describedby="footnote-label">2</a></sup></p>
+<section data-footnotes="" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
+<ol>
+<li id="user-content-fn-measure">
+<p>Measurement gets easier when the unit of work is stable. “One request” is a poor unit if it can secretly trigger five unrelated lookups. <a href="#user-content-fnref-measure" data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref">↩</a></p>
+</li>
+<li id="user-content-fn-small">
+<p>Small here means cognitively small, not just a low line count. A short file with unclear obligations can still be enormous to maintain. <a href="#user-content-fnref-small" data-footnote-backref="" aria-label="Back to reference 2" class="data-footnote-backref">↩</a></p>
+</li>
+</ol>
+</section></div></article></main></body></html>

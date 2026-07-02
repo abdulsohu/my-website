@@ -15,6 +15,24 @@ pnpm dev
 pnpm build
 ```
 
+## Publish for the current GitHub Pages setup
+
+Right now the live domain is being served from the repository branch, not from the GitHub Actions artifact. That means GitHub Pages looks for a root `index.html`.
+
+Use this when you want the live site to match the Astro build immediately:
+
+```bash
+pnpm publish:branch
+```
+
+That command:
+
+1. Builds Astro into `dist/`
+2. Copies the generated static site into the repository root
+3. Leaves your Astro source files in place
+
+If you later switch the GitHub Pages source to `GitHub Actions` in repository settings, you can stop using `publish:branch`.
+
 ## How content is organized
 
 - `src/pages/index.astro` is the homepage.
