@@ -21,10 +21,6 @@ const pubDate = post.data.pubDate.toLocaleDateString("en-US", {
       <p class="home-link"><a href="/">Home</a></p>
       <header class="article-header">
         <h1>{post.data.title}</h1>
-        <p class="article-description">{post.data.description}</p>
-        <p class="article-meta">
-          <time datetime={post.data.pubDate.toISOString()}>{pubDate}</time>
-        </p>
       </header>
       <div class="prose">
         <slot />

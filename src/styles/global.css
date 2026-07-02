@@ -1,15 +1,43 @@
+/* ==========================================================================
+   1. Fonts
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Libre+Franklin:wght@700;800&display=swap");
+
+@font-face {
+  font-family: "EB Garamond-fallback";
+  size-adjust: 94.25%;
+  src: local("Times New Roman");
+}
+
+/* ==========================================================================
+   2. Design tokens
+   Change colors, fonts, and basic theme values here.
+   "1b" — monochrome ink: near-black headings at weight 800, warm-grey
+   metadata, no colored accents.
+   ========================================================================== */
+
 :root {
   --page-bg: #ffffff;
-  --text: #1e2430;
-  --muted: #5f6b7a;
-  --rule: #d6dbe3;
-  --heading: #1f3f70;
-  --link: #1f3f70;
-  --link-hover: #163054;
-  --code-bg: #f6f8fa;
-  --quote-bg: #f7f9fc;
-  --quote-rule: #2e63ac;
+  --text: #000000;
+  --muted: #6f6a63;
+  --rule: #e4e2dd;
+  --heading: #141414;
+  --link: #000000;
+  --link-hover: #000000;
+  --link-underline: #141414;
+  --code-bg: #f4f3f0;
+  --quote-bg: #f7f6f3;
+  --quote-rule: #141414;
+
+  --font-body: "EB Garamond", "EB Garamond-fallback", serif;
+  --font-heading: "Libre Franklin", sans-serif;
+  --font-mono: "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 }
+
+/* ==========================================================================
+   3. Base reset and page defaults
+   ========================================================================== */
 
 * {
   box-sizing: border-box;
@@ -18,24 +46,16 @@
 html {
   background: var(--page-bg);
   color: var(--text);
-  font-size: 18px;
+  font-size: 16px;
 }
 
 body {
   margin: 0;
-  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  line-height: 1.78;
+  font-family: var(--font-body);
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text);
   text-rendering: optimizeLegibility;
-}
-
-a {
-  color: var(--link);
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.12em;
-}
-
-a:hover {
-  color: var(--link-hover);
 }
 
 img,
@@ -44,46 +64,149 @@ svg {
   height: auto;
 }
 
+/* ==========================================================================
+   4. Links
+   Default behavior: links are plain until hover.
+   ========================================================================== */
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-decoration-thickness: 7%;
+  text-underline-offset: 0.12em;
+}
+
+/* ==========================================================================
+   5. Main page layout
+   Controls the central column width and outer page spacing.
+   ========================================================================== */
+
 .page-shell {
-  padding: 3rem 1.25rem 4rem;
+  max-width: 650px;
+  margin: 50px auto;
+  padding: 0 10px 4rem;
 }
 
 .home-shell,
 .article-shell {
-  max-width: 42rem;
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
 }
 
-.home-shell > section + section,
-.article-shell > * + * {
+.home-shell > section + section {
   margin-top: 2.75rem;
 }
+
+.article-shell > * + * {
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   6. Top navigation
+   Used for the "Home" link on post pages.
+   ========================================================================== */
+
+.home-link {
+  margin: 0 0 1rem;
+}
+
+.home-link a {
+  text-decoration: none;
+}
+
+.home-link a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-decoration-thickness: 7%;
+  text-underline-offset: 0.12em;
+}
+
+/* ==========================================================================
+   7. Headings
+   Rule: headings get space above, but no space below.
+   1b: ink color, weight 800, slightly tightened tracking.
+   ========================================================================== */
 
 h1,
 h2,
 h3,
 h4 {
-  margin: 0 0 0.75rem;
-  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
-  line-height: 1.15;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  line-height: 1.16;
   color: var(--heading);
-}
-
-h1 {
-  font-size: clamp(2.4rem, 2rem + 1vw, 3.3rem);
-  letter-spacing: -0.03em;
-}
-
-h2 {
-  font-size: clamp(1.7rem, 1.45rem + 0.5vw, 2.2rem);
   letter-spacing: -0.02em;
 }
 
-h3 {
-  font-size: 1.35rem;
+h1 {
+  font-size: 1.4em;
 }
 
+h2 {
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1.05em;
+  letter-spacing: -0.015em;
+}
+
+h4 {
+  font-size: 1em;
+  letter-spacing: -0.01em;
+}
+
+/* ==========================================================================
+   8. Article header
+   The post title lives here. Description/date were removed from PostLayout.
+   ========================================================================== */
+
+.article-header {
+  margin: 0;
+}
+
+.article-header h1 {
+  margin: 0;
+}
+
+/* ==========================================================================
+   9. Post body typography
+   The .prose class wraps blog post content.
+   ========================================================================== */
+
+/* Headings inside posts: space above, no space below. */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  margin-top: 1.4em;
+  margin-bottom: 0;
+}
+
+/* No extra space between a heading and the paragraph/list after it. */
+.prose h1 + p,
+.prose h2 + p,
+.prose h3 + p,
+.prose h4 + p,
+.prose h1 + ul,
+.prose h2 + ul,
+.prose h3 + ul,
+.prose h4 + ul,
+.prose h1 + ol,
+.prose h2 + ol,
+.prose h3 + ol,
+.prose h4 + ol {
+  margin-top: 0;
+}
+
+/* Basic text rhythm. */
 p,
 ul,
 ol,
@@ -91,21 +214,48 @@ blockquote,
 pre,
 table,
 figure {
-  margin: 0 0 1.35rem;
+  margin: 0 0 20px;
 }
+
+.prose > :first-child {
+  margin-top: 0;
+}
+
+.prose > :last-child {
+  margin-bottom: 0;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4rem;
+}
+
+.prose li + li {
+  margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   10. Homepage intro and general muted text
+   The lede stays full-strength ink; only true metadata is muted grey.
+   ========================================================================== */
 
 .lede,
-.article-description {
-  font-size: 1.18rem;
-}
-
 .section-note,
-.article-meta,
 .writing-description,
 figcaption,
 .footnotes {
   color: var(--muted);
 }
+
+.lede {
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   11. Lists shared by homepage and archive
+   ========================================================================== */
 
 .writing-list,
 .link-list {
@@ -119,68 +269,126 @@ figcaption,
   margin-top: 0.45rem;
 }
 
+.link-list a {
+  text-decoration: none;
+}
+
+.link-list a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--link-underline);
+  text-decoration-thickness: 7%;
+  text-underline-offset: 0.12em;
+}
+
+/* ==========================================================================
+   12. Writing list rows
+   Important: the whole row may be a link, but only the title underlines.
+   ========================================================================== */
+
 .writing-entry {
   display: grid;
   grid-template-columns: 5.75rem 1fr;
   gap: 1rem;
   align-items: start;
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* Prevent the whole row from underlining on hover. */
+.writing-entry:hover {
+  text-decoration: none;
+}
+
+/* Date column. Never underline this. */
+.writing-date {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Title column. Only this part underlines on hover. */
+.writing-entry span:last-child {
   text-decoration: none;
 }
 
 .writing-entry:hover span:last-child {
   text-decoration: underline;
-  text-decoration-thickness: 0.08em;
+  text-decoration-color: var(--link-underline);
+  text-decoration-thickness: 7%;
   text-underline-offset: 0.12em;
 }
 
-.writing-date {
-  color: var(--muted);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
+/* ==========================================================================
+   13. Reiner-like homepage section layout
+   Controls homepage section spacing and indentation.
+   ========================================================================== */
+
+.home-shell h2 {
+  margin-top: 1.6em;
+  margin-bottom: 0.45em;
 }
 
-.link-list a,
-.home-link a {
-  text-decoration: none;
+/* Indent homepage lists under section headings. */
+.home-shell .writing-list,
+.home-shell .link-list {
+  margin-left: 3.75rem;
 }
 
-.home-link {
-  margin-bottom: 2rem;
+/* Keep homepage rows compact. */
+.home-shell .writing-list li + li,
+.home-shell .link-list li + li {
+  margin-top: 0.15rem;
 }
 
-.article-header {
-  margin-bottom: 2rem;
+/* More compact homepage writing rows. */
+.home-shell .writing-entry {
+  display: grid;
+  grid-template-columns: 5.25rem 1fr;
+  gap: 0.35rem;
+  align-items: baseline;
 }
 
-.article-meta {
-  font-size: 0.98rem;
+/* ==========================================================================
+   14. Figures and images
+   ========================================================================== */
+
+.prose p img,
+.prose p svg,
+.figure img {
+  width: 95%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
 }
 
-.prose > :last-child {
+.figure figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* ==========================================================================
+   15. Blockquotes
+   ========================================================================== */
+
+.prose blockquote {
+  color: #2a2a2a;
+  background: var(--quote-bg);
+  border-left: 3px solid var(--quote-rule);
+  border-radius: 0 4px 4px 0;
+  margin: 1.5em 0;
+  padding: 1em 1.5em;
+  font-style: italic;
+}
+
+.prose blockquote p:last-child {
   margin-bottom: 0;
 }
 
-.prose h2,
-.prose h3,
-.prose h4 {
-  margin-top: 2.6rem;
-}
-
-.prose ul,
-.prose ol {
-  padding-left: 1.4rem;
-}
-
-.prose li + li {
-  margin-top: 0.35rem;
-}
-
-.prose blockquote {
-  padding: 1rem 1.2rem;
-  border-left: 3px solid var(--quote-rule);
-  background: var(--quote-bg);
-  font-style: italic;
-}
+/* ==========================================================================
+   16. Tables
+   ========================================================================== */
 
 .prose table {
   width: 100%;
@@ -197,23 +405,28 @@ figcaption,
 }
 
 .prose th {
-  font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-heading);
+  font-weight: 700;
   color: var(--heading);
-  background: #fafbfd;
+  background: #f7f6f3;
 }
 
+/* ==========================================================================
+   17. Code
+   ========================================================================== */
+
 code {
-  font-family: "SFMono-Regular", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
-  font-size: 0.88em;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
   background: var(--code-bg);
-  padding: 0.14rem 0.32rem;
+  padding: 0.12rem 0.28rem;
   border-radius: 0.2rem;
 }
 
 pre {
   overflow-x: auto;
   border: 1px solid var(--rule);
-  border-radius: 0.3rem;
+  border-radius: 0.25rem;
 }
 
 pre code {
@@ -223,14 +436,13 @@ pre code {
 
 .astro-code {
   padding: 1rem 1.1rem;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   line-height: 1.6;
 }
 
-.figure figcaption {
-  margin-top: 0.65rem;
-  font-size: 0.95rem;
-}
+/* ==========================================================================
+   18. Footnotes
+   ========================================================================== */
 
 .footnotes {
   margin-top: 2.5rem;
@@ -243,19 +455,51 @@ pre code {
   margin-bottom: 0;
 }
 
-.katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 0.2rem 0;
+/* ==========================================================================
+   19. Math / KaTeX
+   ========================================================================== */
+
+.katex {
+  font-size: 1em;
 }
 
+.katex-display {
+  margin: 1em 0;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ==========================================================================
+   20. Mobile
+   ========================================================================== */
+
 @media (max-width: 720px) {
-  html {
-    font-size: 17px;
+  body {
+    font-size: 19px;
+    line-height: 1.5;
   }
 
   .page-shell {
-    padding-top: 2rem;
+    margin: 32px auto;
+    padding: 0 12px 3rem;
+  }
+
+  .home-link {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 1.35em;
+  }
+
+  h2 {
+    font-size: 1.16em;
+  }
+
+  .home-shell .writing-list,
+  .home-shell .link-list {
+    margin-left: 1.25rem;
   }
 
   .writing-entry {
