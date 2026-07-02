@@ -1,6 +1,6 @@
 # my-website
 
-A minimal Astro writing site for GitHub Pages.
+A minimal Astro writing site that deploys to GitHub Pages from GitHub Actions.
 
 ## Local development
 
@@ -15,40 +15,29 @@ pnpm dev
 pnpm build
 ```
 
-## Publish for the current GitHub Pages setup
+## Deploy
 
-Right now the live domain is being served from the repository branch, not from the GitHub Actions artifact. That means GitHub Pages looks for a root `index.html`.
+Push to `main`.
 
-Use this when you want the live site to match the Astro build immediately:
+The workflow in `.github/workflows/deploy.yml` installs dependencies, builds the Astro site, and deploys the `dist/` output to GitHub Pages.
 
-```bash
-pnpm publish:branch
-```
+For this to stay simple, GitHub Pages should use `GitHub Actions` as its source, not `Deploy from a branch`.
 
-That command:
-
-1. Builds Astro into `dist/`
-2. Copies the generated static site into the repository root
-3. Leaves your Astro source files in place
-
-If you later switch the GitHub Pages source to `GitHub Actions` in repository settings, you can stop using `publish:branch`.
-
-## How content is organized
+## Content structure
 
 - `src/pages/index.astro` is the homepage.
-- `src/pages/writing.astro` is the full writing index.
-- `src/pages/posts/[slug].astro` renders every post.
-- `src/content/posts/` holds `.md` and `.mdx` articles.
-- `src/assets/` is for imported images that Astro can optimize responsively.
-- `public/figures/` is for static assets such as hand-written SVG figures.
-- `public/CNAME` is the file GitHub Pages needs in the final build output.
-- Astro 7 in this repo expects Node `>=22.12.0`.
+- `src/pages/writing.astro` is the writing index.
+- `src/pages/posts/[slug].astro` renders each post.
+- `src/content/posts/` holds `.md` and `.mdx` posts.
+- `src/layouts/` holds the site layouts.
+- `src/styles/global.css` holds the global styles.
+- `public/figures/` is for static figures.
+- `public/CNAME` is copied into the final build for the custom domain.
 
-## How to add a post
+## Add a post
 
 1. Create a new `.md` or `.mdx` file in `src/content/posts/`.
 2. Add `title`, `description`, and `pubDate` frontmatter.
-3. Use Markdown for normal writing.
-4. Use MDX when you want Astro components such as responsive images.
+3. Commit and push to `main`.
 
-The root `CNAME` is kept as an easy-to-see copy of the custom domain. The file that actually ships with the site is `public/CNAME`.
+GitHub Actions handles the build and deployment.

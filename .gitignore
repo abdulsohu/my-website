@@ -4,3 +4,5 @@ dist/
 .npm-cache/
 .astro/
 .pnpm-home/
+/_astro/
+/.nojekyll
