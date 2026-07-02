@@ -40,4 +40,4 @@ For this to stay simple, GitHub Pages should use `GitHub Actions` as its source,
 2. Add `title`, `description`, and `pubDate` frontmatter.
 3. Commit and push to `main`.
 
-GitHub Actions handles the build and deployment.
+GitHub Actions handles the build and deployment post-push.
